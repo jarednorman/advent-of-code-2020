@@ -1,3 +1,14 @@
 #!/usr/bin/env ruby
 
-puts "Advent of Code"
+require 'rubygems'
+require 'bundler/setup'
+
+module AoC
+  class << self
+    def command(argv)
+      puts argv.inspect
+    end
+  end
+end
+
+AoC.command(ARGV)
