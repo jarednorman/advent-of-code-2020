@@ -23,7 +23,7 @@ module AoC
 
     def setup_zeitwerk
       loader = Zeitwerk::Loader.new
-      loader.push_dir("/home/jardo/Codes/advent_of_code")
+      loader.push_dir(__dir__)
       loader.inflector.inflect("aoc" => "AoC")
       loader.setup
     end
@@ -40,7 +40,7 @@ module AoC
         puts "Solution for year #{year} day #{day}:"
         puts AoC.const_get(day_const_string).new.solution
       else
-        puts "First run! Generating year #{year} day #{day}!"
+        puts "Generating year #{year} day #{day}!"
 
         FileUtils.mkdir_p File.dirname(day_directory_path) 
 
