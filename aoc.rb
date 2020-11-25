@@ -36,7 +36,12 @@ module AoC
     end
 
     def call
-      unless File.directory?(day_directory_path)
+      if File.exist?(day_path)
+        puts "Solution for year #{year} day #{day}:"
+        puts AoC.const_get(day_const_string).new.solution
+      else
+        puts "First run! Generating year #{year} day #{day}!"
+
         FileUtils.mkdir_p File.dirname(day_directory_path) 
 
         File.write(
@@ -49,9 +54,6 @@ module AoC
           day_renderer.result(binding)
         ) unless File.exist?(day_path)
       end
-
-      puts "Solution:"
-      puts AoC.const_get(day_const_string).new.solution
     end
 
     private
