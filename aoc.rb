@@ -8,6 +8,7 @@ Bundler.require(:default)
 
 require 'fileutils'
 require 'erb'
+require 'net/http'
 
 require 'zeitwerk'
 
