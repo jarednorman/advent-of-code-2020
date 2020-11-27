@@ -43,8 +43,7 @@ module AoC
         if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
           commit "Tests pass for year #{year} day #{day}"
 
-          puts "Solution for year #{year} day #{day}:"
-          puts klass.new.solution
+          puts "\nSolution for year #{year} day #{day}:\n #{klass.new.solution}\n"
         end
       else
         puts "Generating year #{year} day #{day}!"
