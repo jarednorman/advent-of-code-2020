@@ -41,9 +41,12 @@ module AoC
         klass = AoC.const_get(day_const_string)
 
         if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
-          commit "Tests pass for year #{year} day #{day}" if dirty_git?
+          if dirty_git?
+            commit "Tests pass for year #{year} day #{day}"
+            puts
+          end
 
-          puts "\nSolution for year #{year} day #{day}:\n #{klass.new.solution}\n"
+          puts "Solution for year #{year} day #{day}:\n #{klass.new.solution}\n"
         end
       else
         puts "Generating year #{year} day #{day}!"
