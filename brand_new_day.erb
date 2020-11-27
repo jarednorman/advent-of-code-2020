@@ -4,9 +4,6 @@ class AoC::<%= day_const_string %>
   end
 
   def input
-    @input ||= AoC::Input.load(
-      year: <%= year %>, 
-      day: <%= day %>
-    )
+    @input ||= File.read("<%= input_path %>")
   end
 end
