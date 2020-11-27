@@ -46,7 +46,7 @@ module AoC
             puts
           end
 
-          puts "Solution for year #{year} day #{day}:\t#{klass.new.solution}\n"
+          puts "Solution for year #{year} day #{day}:\n#{klass.new.solution}\n"
         end
       else
         puts "Generating year #{year} day #{day}!"
