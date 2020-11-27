@@ -41,6 +41,7 @@ module AoC
         klass = AoC.const_get(day_const_string)
 
         if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
+          binding.pry
           commit "Tests pass for year #{year} day #{day}"
 
           puts "\nSolution for year #{year} day #{day}:\n #{klass.new.solution}\n"
