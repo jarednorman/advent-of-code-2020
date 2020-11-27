@@ -7,3 +7,11 @@ class AoC::<%= day_const_string %>
     @input ||= File.read("<%= input_path %>")
   end
 end
+
+RSpec.describe AoC::Year2019::Day6 do
+  let(:instance) { described_class.new }
+
+  describe "#solution" do
+    subject { instance.solution }
+  end
+end

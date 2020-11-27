@@ -38,8 +38,14 @@ module AoC
 
     def call
       if File.exist?(day_path)
-        puts "Solution for year #{year} day #{day}:"
-        puts AoC.const_get(day_const_string).new.solution
+        klass = AoC.const_get(day_const_string)
+
+        if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
+          commit "Tests pass for year #{year} day #{day}"
+
+          puts "Solution for year #{year} day #{day}:"
+          puts klass.new.solution
+        end
       else
         puts "Generating year #{year} day #{day}!"
 
@@ -60,14 +66,18 @@ module AoC
           contents: input_data
         )
 
-        system(*%W(git add .))
-        system(*%W(git commit -m #{commit_message}))
+        commit "Generate year #{year} day #{day}"
       end
     end
 
     private
 
     attr_reader :day, :year
+
+    def commit(message)
+      system(*%W(git add .))
+      system(*%W(git commit -m #{message}))
+    end
 
     def generate_file(contents:, path:)
       File.write(path, contents) unless File.exist?(input_path)
@@ -107,10 +117,6 @@ module AoC
 
     def year_const_string
       "Year#{year}"
-    end
-
-    def commit_message
-      "Generated year #{year} day #{day}"
     end
 
     def input_data

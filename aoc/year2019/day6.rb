@@ -7,3 +7,13 @@ class AoC::Year2019::Day6
     @input ||= File.read("aoc/year2019/day6.txt")
   end
 end
+
+RSpec.describe AoC::Year2019::Day6 do
+  let(:instance) { described_class.new }
+
+  describe "#solution" do
+    subject { instance.solution }
+
+    it { is_expected.to eq 0 }
+  end
+end
