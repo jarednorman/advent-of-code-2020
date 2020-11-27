@@ -59,6 +59,8 @@ module AoC
           path: input_path,
           contents: input_data
         )
+
+        `git commit -am "Generated year #{year} day #{day}"` 
       end
     end
 
