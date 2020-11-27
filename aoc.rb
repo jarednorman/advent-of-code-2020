@@ -38,6 +38,7 @@ module AoC
 
     def call
       if File.exist?(day_path)
+        require 'rspec/autorun'
         puts "Solution for year #{year} day #{day}:"
         puts AoC.const_get(day_const_string).new.solution
       else
