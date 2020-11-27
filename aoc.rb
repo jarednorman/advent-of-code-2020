@@ -60,7 +60,8 @@ module AoC
           contents: input_data
         )
 
-        `git commit -am "Generated year #{year} day #{day}"` 
+        system(*%W(git add .))
+        system(*%W(git commit -m #{commit_message}))
       end
     end
 
@@ -106,6 +107,10 @@ module AoC
 
     def year_const_string
       "Year#{year}"
+    end
+
+    def commit_message
+      "Generated year #{year} day #{day}"
     end
 
     def input_data
