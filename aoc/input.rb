@@ -1,6 +1,6 @@
 module AoC::Input
   class << self
-    def load(year:, day:)
+    def fetch(year:, day:)
       uri = URI("https://adventofcode.com/#{year}/day/#{day}/input")
       http = Net::HTTP.new(uri.host, 443)
       http.use_ssl = true

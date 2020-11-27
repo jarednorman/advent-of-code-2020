@@ -45,21 +45,30 @@ module AoC
 
         FileUtils.mkdir_p File.dirname(day_directory_path) 
 
-        File.write(
-          year_path,
-          year_renderer.result(binding)
-        ) unless File.exist?(year_path)
+        generate_file(
+          path: year_path,
+          contents: year_renderer.result(binding)
+        )
 
-        File.write(
-          day_path,
-          day_renderer.result(binding)
-        ) unless File.exist?(day_path)
+        generate_file(
+          path: day_path,
+          contents: day_renderer.result(binding)
+        )
+
+        generate_file(
+          path: input_path,
+          contents: AoC::Input.fetch(year: year, day: day)
+        )
       end
     end
 
     private
 
     attr_reader :day, :year
+
+    def generate_file(contents:, path:)
+      File.write(path, contents) unless File.exist?(input_path)
+    end
 
     def day_renderer
       ERB.new(File.read("brand_new_day.erb"))
@@ -75,6 +84,10 @@ module AoC
 
     def day_path
       "#{day_directory_path}.rb"
+    end
+
+    def input_path
+      "#{day_directory_path}.txt"
     end
 
     def day_directory_path
