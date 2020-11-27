@@ -41,8 +41,7 @@ module AoC
         klass = AoC.const_get(day_const_string)
 
         if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
-          binding.pry
-          commit "Tests pass for year #{year} day #{day}"
+          commit "Tests pass for year #{year} day #{day}" if dirty_git?
 
           puts "\nSolution for year #{year} day #{day}:\n #{klass.new.solution}\n"
         end
@@ -117,6 +116,10 @@ module AoC
 
     def year_const_string
       "Year#{year}"
+    end
+
+    def dirty_git?
+      `git status --porcelain=v1 2>/dev/null | wc -l`.strip.to_i != 0
     end
 
     def input_data
