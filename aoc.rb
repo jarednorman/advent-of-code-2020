@@ -47,6 +47,8 @@ module AoC
           end
 
           puts "\u001b[34;1mSolution for year #{year} day #{day}: \u001b[31;1m#{klass.new.solution}\n"
+        else
+          system(*%W(git reset --hard))
         end
       else
         puts "Generating year #{year} day #{day}!"
