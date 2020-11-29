@@ -13,5 +13,7 @@ RSpec.describe AoC::Year2019::Day7 do
 
   describe "#solution" do
     subject { instance.solution }
+
+    it { is_expected.to eq 0 }
   end
 end
