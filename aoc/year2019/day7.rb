@@ -1,6 +1,6 @@
 class AoC::Year2019::Day7
   def solution
-    0
+    0 + 20
   end
 
   def input
