@@ -1,7 +1,7 @@
 module AoC::Year2020::Day1
   class Part1
     def solution
-      input.split.map(&:to_i).combinations(2).find do |a, b|
+      input.split.map(&:to_i).combination(2).find do |a, b|
         a + b == 2020
       end.inject(&:*)
     end
