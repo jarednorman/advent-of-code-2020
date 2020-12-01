@@ -1,6 +1,6 @@
 module AoC::Year2020::Day1
   class Part1
-    def solution
+    def solution(input = real_input)
       input.split.map(&:to_i).combination(2).find do |a, b|
         a + b == 2020
       end.inject(&:*)
@@ -8,7 +8,7 @@ module AoC::Year2020::Day1
 
     private
 
-    def input
+    def real_input
       @input ||= File.read("aoc/year2020/day1.txt")
     end
   end
