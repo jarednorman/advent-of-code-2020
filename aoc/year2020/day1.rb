@@ -1,9 +1,9 @@
 module AoC::Year2020::Day1
   class Part1
     def solution(input = real_input)
-      input.split.map(&:to_i).combination(combo_size).find do |a, b|
+      pp(input.split.map(&:to_i).combination(combo_size).find do |a, b|
         a + b == 2020
-      end.inject(&:*)
+      end).inject(&:*)
     end
 
     private
