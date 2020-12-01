@@ -18,6 +18,9 @@ module AoC::Year2020::Day1
   end
 
   class Part2 < Part1
+    def combo_size
+      3
+    end
   end
 end
 
@@ -55,6 +58,6 @@ RSpec.describe AoC::Year2020::Day1::Part2 do
       1456"
     }
 
-    xit { is_expected.to eq 241861950 }
+    it { is_expected.to eq 241861950 }
   end
 end
