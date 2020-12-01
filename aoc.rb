@@ -142,5 +142,5 @@ module AoC
   end
 end
 
-raise "errrrror" if ARGV.length != 0
+raise "errrrror" if ARGV.length != 3
 AoC.run(*ARGV.map(&:to_i))
