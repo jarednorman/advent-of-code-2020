@@ -1,7 +1,7 @@
 module AoC::Year2019::Day7
   class Part1
     def solution
-      0
+      3
     end
 
     private
@@ -13,7 +13,7 @@ module AoC::Year2019::Day7
 
   class Part2 < Part1
     def solution
-      0
+      9
     end
   end
 end
@@ -23,6 +23,8 @@ RSpec.describe AoC::Year2019::Day7::Part1 do
 
   describe "#solution" do
     subject { instance.solution }
+
+    it { is_expected.to eq 3 }
   end
 end
 
@@ -31,5 +33,7 @@ RSpec.describe AoC::Year2019::Day7::Part2 do
 
   describe "#solution" do
     subject { instance.solution }
+
+    it { is_expected.to eq 9 }
   end
 end
