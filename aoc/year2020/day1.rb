@@ -54,6 +54,6 @@ RSpec.describe AoC::Year2020::Day1::Part2 do
       1456"
     }
 
-    xit { is_expected.to eq 0 }
+    xit { is_expected.to eq 241861950 }
   end
 end
