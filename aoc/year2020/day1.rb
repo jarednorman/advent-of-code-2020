@@ -14,9 +14,6 @@ module AoC::Year2020::Day1
   end
 
   class Part2 < Part1
-    def solution
-      0
-    end
   end
 end
 
