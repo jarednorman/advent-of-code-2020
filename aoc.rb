@@ -79,7 +79,7 @@ module AoC
 
     private
 
-    attr_reader :day, :year
+    attr_reader :day, :year, :part
 
     def commit(message)
       system(*%W(git add .))
