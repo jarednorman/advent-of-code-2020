@@ -43,6 +43,17 @@ RSpec.describe AoC::Year2020::Day1::Part2 do
   let(:instance) { described_class.new }
 
   describe "#solution" do
-    subject { instance.solution }
+    subject { instance.solution(input) }
+
+    let(:input) {
+      "1721
+      979
+      366
+      299
+      675
+      1456"
+    }
+
+    xit { is_expected.to eq 241861950 }
   end
 end
