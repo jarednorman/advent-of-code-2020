@@ -1,14 +1,32 @@
-class AoC::<%= day_const_string %>
-  def solution
-    0
+module AoC::<%= day_const_string %>
+  class PartOne
+    def solution
+      0
+    end
+
+    private
+
+    def input
+      @input ||= File.read("<%= input_path %>")
+    end
   end
 
-  def input
-    @input ||= File.read("<%= input_path %>")
+  class PartTwo < PartOne
+    def solution
+      0
+    end
   end
 end
 
-RSpec.describe AoC::<%= day_const_string %> do
+RSpec.describe AoC::<%= day_const_string %>::PartOne do
+  let(:instance) { described_class.new }
+
+  describe "#solution" do
+    subject { instance.solution }
+  end
+end
+
+RSpec.describe AoC::<%= day_const_string %>::PartTwo do
   let(:instance) { described_class.new }
 
   describe "#solution" do

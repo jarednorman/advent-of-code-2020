@@ -14,10 +14,10 @@ require 'zeitwerk'
 
 module AoC
   class << self
-    def run(year, day)
+    def run(year, day, part)
       setup_zeitwerk
 
-      Runner.new(year, day).call
+      Runner.new(year, day, part).call
     end
 
     private
@@ -31,14 +31,16 @@ module AoC
   end
 
   class Runner
-    def initialize(year, day)
+    def initialize(year, day, part)
       @day = day
       @year = year
+      @part = part
     end
 
     def call
       if File.exist?(day_path)
-        klass = AoC.const_get(day_const_string)
+        # This loads both parts, assuming they are in the same file.
+        mod = AoC.const_get(day_const_string)
 
         if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
           if dirty_git?
@@ -46,7 +48,8 @@ module AoC
             puts
           end
 
-          puts "\u001b[34;1mSolution for year #{year} day #{day}: \u001b[31;1m#{klass.new.solution}\n"
+          klass = mod.const_get("Part#{part}")
+          puts "\u001b[34;1mSolution for year #{year} day #{day} part #{part}: \u001b[31;1m#{klass.new.solution}\n"
         else
           system(*%W(git reset --hard))
         end
@@ -139,4 +142,5 @@ module AoC
   end
 end
 
+raise "errrrror" if ARGV.length != 0
 AoC.run(*ARGV.map(&:to_i))
