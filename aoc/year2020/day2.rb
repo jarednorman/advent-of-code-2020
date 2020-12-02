@@ -61,8 +61,8 @@ module AoC::Year2020::Day2
   end
 
   class Part2 < Part1
-    def solution
-      0
+    def password_class
+      Password2
     end
   end
 end
@@ -150,7 +150,7 @@ RSpec.describe "Year 2020 Day 2" do
     describe "#solution" do
       subject { instance.solution }
 
-      it "works for the test input", :pending do
+      it "works for the test input" do
         expect(subject).to eq 1
       end
     end
