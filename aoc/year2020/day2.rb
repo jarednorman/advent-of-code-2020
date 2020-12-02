@@ -31,13 +31,17 @@ module AoC::Year2020::Day2
 
     def solution
       input.split("\n").count do |password_record|
-        Password.new(password_record, policy_class: policy_class).valid?
+        password_class.new(password_record, policy_class: policy_class).valid?
       end
     end
 
     private
 
     attr_reader :input
+
+    def password_class
+      Password
+    end
 
     def policy_class
       Policy
