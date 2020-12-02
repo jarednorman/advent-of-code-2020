@@ -1,4 +1,4 @@
-module AoC::<%= day_const_string %>
+module AoC::Year2019::Day4
   class Part1
     def initialize(input = real_input)
       @input = input
@@ -13,7 +13,7 @@ module AoC::<%= day_const_string %>
     attr_reader :input
 
     def real_input
-      @input ||= File.read("<%= input_path %>")
+      @input ||= File.read("aoc/year2019/day4.txt")
     end
   end
 
@@ -24,13 +24,13 @@ module AoC::<%= day_const_string %>
   end
 end
 
-RSpec.describe "Day <%= day %>" do
+RSpec.describe "Day 4" do
   let(:input) {
     <<~INPUT
     INPUT
   }
 
-  describe AoC::<%= day_const_string %>::Part1 do
+  describe AoC::Year2019::Day4::Part1 do
     let(:instance) { described_class.new(input) }
 
     describe "#solution" do
@@ -38,7 +38,7 @@ RSpec.describe "Day <%= day %>" do
     end
   end
 
-  describe AoC::<%= day_const_string %>::Part2 do
+  describe AoC::Year2019::Day4::Part2 do
     let(:instance) { described_class.new(input) }
 
     describe "#solution" do
