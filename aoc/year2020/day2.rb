@@ -1,4 +1,7 @@
 module AoC::Year2020::Day2
+  class Password
+  end
+
   class Part1
     def initialize(input = real_input)
       @input = input
@@ -25,6 +28,28 @@ module AoC::Year2020::Day2
 end
 
 RSpec.describe "Year 2020 Day 2" do
+  describe AoC::Year2020::Day2::Password do
+    describe "#valid?" do
+      subject { described_class.new(password).valid? }
+
+      context "when the password is valid" do
+        let(:password) { "1-3 a: abcde" }
+
+        it "is true", :pending do
+          expect(subject).to eq true
+        end
+      end
+
+      context "when the password is invalid" do
+        let(:password) { "1-3 b: cdefg" }
+
+        it "is false", :pending do
+          expect(subject).to eq false
+        end
+      end
+    end
+  end
+
   let(:input) {
     <<~INPUT
       1-3 a: abcde
