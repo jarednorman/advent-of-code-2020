@@ -1,5 +1,11 @@
 module AoC::Year2020::Day2
   class Policy
+    def initialize(range, letter)
+      start, finish = range.split("-").map(&:to_i)
+      @range = start..finish
+    end
+
+    attr_reader :range
   end
 
   class Password
@@ -34,7 +40,7 @@ RSpec.describe "Year 2020 Day 2" do
   describe AoC::Year2020::Day2::Policy do
     subject { described_class.new("1-2", "x") }
 
-    it "has a range", :pending do
+    it "has a range" do
       expect(subject.range).to eq(1..2)
     end
   end
