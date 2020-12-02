@@ -3,9 +3,10 @@ module AoC::Year2020::Day2
     def initialize(range, letter)
       start, finish = range.split("-").map(&:to_i)
       @range = start..finish
+      @letter = letter
     end
 
-    attr_reader :range
+    attr_reader :range, :letter
   end
 
   class Password
@@ -44,7 +45,7 @@ RSpec.describe "Year 2020 Day 2" do
       expect(subject.range).to eq(1..2)
     end
 
-    it "has a letter", :pending do
+    it "has a letter" do
       expect(subject.letter).to eq "x"
     end
   end
