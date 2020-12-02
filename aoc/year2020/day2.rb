@@ -115,6 +115,10 @@ RSpec.describe "Year 2020 Day 2" do
 
     describe "#solution" do
       subject { instance.solution }
+
+      it "works for the test input", :pending do
+        expect(subject).to eq 1
+      end
     end
   end
 end
