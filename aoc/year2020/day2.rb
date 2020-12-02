@@ -27,6 +27,9 @@ end
 RSpec.describe "Year 2020 Day 2" do
   let(:input) {
     <<~INPUT
+      1-3 a: abcde
+      1-3 b: cdefg
+      2-9 c: ccccccccc
     INPUT
   }
 
@@ -35,6 +38,10 @@ RSpec.describe "Year 2020 Day 2" do
 
     describe "#solution" do
       subject { instance.solution }
+
+      it "does the test input right", :pending do
+        expect(subject).to eq 2
+      end
     end
   end
 
