@@ -51,6 +51,7 @@ module AoC
           klass = mod.const_get("Part#{part}")
           puts "\u001b[34;1mSolution for year #{year} day #{day} part #{part}: \u001b[31;1m#{klass.new.solution}\u001b[0m\n"
         else
+          binding.pry
           system(*%W(git reset --hard))
         end
       else
