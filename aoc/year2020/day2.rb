@@ -10,6 +10,18 @@ module AoC::Year2020::Day2
   end
 
   class Password
+    def initialize(password_record)
+      policy_definition, @password = password_record.split(": ")
+      @policy = Policy.new(*policy_definition.split(" "))
+    end
+
+    def valid?
+      policy.range.include? password.count(policy.letter)
+    end
+
+    private
+
+    attr_reader :password, :policy
   end
 
   class Part1
@@ -57,7 +69,7 @@ RSpec.describe "Year 2020 Day 2" do
       context "when the password is valid" do
         let(:password) { "1-3 a: abcde" }
 
-        it "is true", :pending do
+        it "is true" do
           expect(subject).to eq true
         end
       end
@@ -65,7 +77,7 @@ RSpec.describe "Year 2020 Day 2" do
       context "when the password is invalid" do
         let(:password) { "1-3 b: cdefg" }
 
-        it "is false", :pending do
+        it "is false" do
           expect(subject).to eq false
         end
       end
