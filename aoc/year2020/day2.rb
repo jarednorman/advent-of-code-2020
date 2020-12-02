@@ -30,7 +30,7 @@ module AoC::Year2020::Day2
     end
 
     def solution
-      input.split.count do |password_record|
+      input.split("\n").count do |password_record|
         Password.new(password_record).valid?
       end
     end
@@ -100,7 +100,7 @@ RSpec.describe "Year 2020 Day 2" do
     describe "#solution" do
       subject { instance.solution }
 
-      it "does the test input right", :pending do
+      it "does the test input right" do
         expect(subject).to eq 2
       end
     end
