@@ -1,4 +1,7 @@
 module AoC::Year2020::Day2
+  class Policy
+  end
+
   class Password
   end
 
@@ -28,6 +31,14 @@ module AoC::Year2020::Day2
 end
 
 RSpec.describe "Year 2020 Day 2" do
+  describe AoC::Year2020::Day2::Policy do
+    subject { described_class.new("1-2", "x") }
+
+    it "has a range", :pending do
+      expect(subject.range).to eq(1..2)
+    end
+  end
+
   describe AoC::Year2020::Day2::Password do
     describe "#valid?" do
       subject { described_class.new(password).valid? }
