@@ -25,6 +25,11 @@ module AoC::Year2020::Day2
   end
 
   class Password2 < Password
+    def valid?
+      [policy.range.first, policy.range.last].count do |pos|
+        password[pos - 1] == policy.letter
+      end == 1
+    end
   end
 
   class Part1
@@ -90,7 +95,7 @@ RSpec.describe "Year 2020 Day 2" do
       context "when the password is invalid" do
         let(:password) { "2-9 c: ccccccccc" }
 
-        it "is false", :pending do
+        it "is false" do
           expect(subject).to eq false
         end
       end
