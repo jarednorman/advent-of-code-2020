@@ -10,9 +10,9 @@ module AoC::Year2020::Day2
   end
 
   class Password
-    def initialize(password_record)
+    def initialize(password_record, policy_class:)
       policy_definition, @password = password_record.split(": ")
-      @policy = Policy.new(*policy_definition.split(" "))
+      @policy = policy_class.new(*policy_definition.split(" "))
     end
 
     def valid?
@@ -31,7 +31,7 @@ module AoC::Year2020::Day2
 
     def solution
       input.split("\n").count do |password_record|
-        Password.new(password_record).valid?
+        Password.new(password_record, policy_class: Policy).valid?
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe "Year 2020 Day 2" do
 
   describe AoC::Year2020::Day2::Password do
     describe "#valid?" do
-      subject { described_class.new(password).valid? }
+      subject { described_class.new(password, policy_class: AoC::Year2020::Day2::Policy).valid? }
 
       context "when the password is valid" do
         let(:password) { "1-3 a: abcde" }
