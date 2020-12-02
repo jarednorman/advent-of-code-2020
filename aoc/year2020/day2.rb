@@ -43,6 +43,10 @@ RSpec.describe "Year 2020 Day 2" do
     it "has a range" do
       expect(subject.range).to eq(1..2)
     end
+
+    it "has a letter", :pending do
+      expect(subject.letter).to eq "x"
+    end
   end
 
   describe AoC::Year2020::Day2::Password do
