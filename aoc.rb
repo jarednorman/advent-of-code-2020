@@ -75,6 +75,8 @@ module AoC
 
         commit "Generate year #{year} day #{day}"
       end
+
+      0
     end
 
     private
