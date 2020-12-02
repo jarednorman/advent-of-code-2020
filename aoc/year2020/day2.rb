@@ -31,13 +31,17 @@ module AoC::Year2020::Day2
 
     def solution
       input.split("\n").count do |password_record|
-        Password.new(password_record, policy_class: Policy).valid?
+        Password.new(password_record, policy_class: policy_class).valid?
       end
     end
 
     private
 
     attr_reader :input
+
+    def policy_class
+      Policy
+    end
 
     def real_input
       @input ||= File.read("aoc/year2020/day2.txt")
