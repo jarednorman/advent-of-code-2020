@@ -30,7 +30,9 @@ module AoC::Year2020::Day2
     end
 
     def solution
-      0
+      input.split.count do |password_record|
+        Password.new(password_record).valid?
+      end
     end
 
     private
