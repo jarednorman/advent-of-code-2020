@@ -35,6 +35,10 @@ RSpec.describe "Day 4" do
 
     describe "#solution" do
       subject { instance.solution }
+
+      it "equals two", :pending do
+        expect(subject).to eq 2
+      end
     end
   end
 
