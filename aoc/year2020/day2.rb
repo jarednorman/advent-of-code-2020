@@ -24,6 +24,9 @@ module AoC::Year2020::Day2
     attr_reader :password, :policy
   end
 
+  class Password2 < Password
+  end
+
   class Part1
     def initialize(input = real_input)
       @input = input
@@ -69,6 +72,28 @@ RSpec.describe "Year 2020 Day 2" do
 
     it "has a letter" do
       expect(subject.letter).to eq "x"
+    end
+  end
+
+  describe AoC::Year2020::Day2::Password2 do
+    describe "#valid?" do
+      subject { described_class.new(password, policy_class: AoC::Year2020::Day2::Policy).valid? }
+
+      context "when the password is valid" do
+        let(:password) { "1-3 a: abcde" }
+
+        it "is true" do
+          expect(subject).to eq true
+        end
+      end
+
+      context "when the password is invalid" do
+        let(:password) { "2-9 c: ccccccccc" }
+
+        it "is false", :pending do
+          expect(subject).to eq false
+        end
+      end
     end
   end
 
