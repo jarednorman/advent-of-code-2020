@@ -40,6 +40,10 @@ module AoC::Year2020::Day3
       it "returns no tree when there's no tree" do
         expect(map.get(0, 0)).to eq :empty
       end
+
+      it "returns a tree when there's a tree" do
+        expect(map.get(3, 0)).to eq :tree
+      end
     end
   end
 
