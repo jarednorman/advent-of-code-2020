@@ -67,22 +67,26 @@ module AoC::Year2020::Day3
     end
 
     def solution
+      count_trees(3, 1)
+    end
+
+    private
+
+    attr_reader :input
+
+    def count_trees(slope_x, slope_y)
       x, y = 0, 0
       trees = 0
 
       while y < map.height
         trees += 1 if map.get(x, y) == :tree
 
-        x += 3
-        y += 1
+        x += slope_x
+        y += slope_y
       end
 
       trees
     end
-
-    private
-
-    attr_reader :input
 
     def real_input
       @input ||= File.read("aoc/year2020/day3.txt")
