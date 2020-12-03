@@ -1,4 +1,11 @@
 module AoC::<%= day_const_string %>
+  RSpec.shared_context "sample input" do
+    let(:input) {
+      <<~INPUT
+      INPUT
+    }
+  end
+
   class Part1
     def initialize(input = real_input)
       @input = input
@@ -17,32 +24,30 @@ module AoC::<%= day_const_string %>
     end
   end
 
+  RSpec.describe Part1 do
+    let(:instance) { described_class.new(input) }
+
+    describe "#solution" do
+      subject { instance.solution }
+
+      include_context "sample input"
+    end
+  end
+
   class Part2 < Part1
     def solution
       0
     end
   end
-end
 
-RSpec.describe "Year <%= year %> Day <%= day %>" do
-  let(:input) {
-    <<~INPUT
-    INPUT
-  }
-
-  describe AoC::<%= day_const_string %>::Part1 do
+  RSpec.describe Part2 do
     let(:instance) { described_class.new(input) }
 
     describe "#solution" do
       subject { instance.solution }
-    end
-  end
 
-  describe AoC::<%= day_const_string %>::Part2 do
-    let(:instance) { described_class.new(input) }
-
-    describe "#solution" do
-      subject { instance.solution }
+      include_context "sample input"
     end
   end
 end
+
