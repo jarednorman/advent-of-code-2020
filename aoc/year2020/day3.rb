@@ -118,6 +118,10 @@ module AoC::Year2020::Day3
       subject { instance.solution }
 
       include_context "sample input"
+
+      it "does the right thing", :pending do
+        expect(subject).to eq 336
+      end
     end
   end
 end
