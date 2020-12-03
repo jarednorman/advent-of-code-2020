@@ -18,9 +18,16 @@ module AoC::Year2020::Day3
   end
 
   class Map
+    def initialize(map_data)
+    end
   end
 
   RSpec.describe Map do
+    include_context "sample input"
+
+    it "can be initialized" do
+      described_class.new(input)
+    end
   end
 
   class Part1
