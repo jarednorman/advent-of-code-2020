@@ -23,7 +23,7 @@ module AoC::Year2020::Day3
     end
 
     def get(x, y)
-      if @map_data[y][x] == "."
+      if @map_data[y][x % @map_data.first.length] == "."
         :empty
       else
         :tree
@@ -43,6 +43,10 @@ module AoC::Year2020::Day3
 
       it "returns a tree when there's a tree" do
         expect(map.get(3, 0)).to eq :tree
+      end
+
+      it "loops" do
+        expect(map.get(13, 0)).to eq :tree
       end
     end
   end
