@@ -19,6 +19,15 @@ module AoC::Year2020::Day3
 
   class Map
     def initialize(map_data)
+      @map_data = map_data.split("\n").map(&:chars)
+    end
+
+    def get(x, y)
+      if @map_data[y][x] == "."
+        :empty
+      else
+        :tree
+      end
     end
   end
 
@@ -30,7 +39,7 @@ module AoC::Year2020::Day3
     describe "#get" do
       subject { map.get(0, 0) }
 
-      it "returns no tree", :pending do
+      it "returns no tree" do
         expect(subject).to eq :empty
       end
     end
