@@ -37,10 +37,8 @@ module AoC::Year2020::Day3
     let(:map) { described_class.new(input) }
 
     describe "#get" do
-      subject { map.get(0, 0) }
-
-      it "returns no tree" do
-        expect(subject).to eq :empty
+      it "returns no tree when there's no tree" do
+        expect(map.get(0, 0)).to eq :empty
       end
     end
   end
