@@ -25,8 +25,14 @@ module AoC::Year2020::Day3
   RSpec.describe Map do
     include_context "sample input"
 
-    it "can be initialized" do
-      described_class.new(input)
+    let(:map) { described_class.new(input) }
+
+    describe "#get" do
+      subject { map.get(0, 0) }
+
+      it "returns no tree", :pending do
+        expect(subject).to eq :empty
+      end
     end
   end
 
