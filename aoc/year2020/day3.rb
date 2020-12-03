@@ -29,6 +29,10 @@ module AoC::Year2020::Day3
         :tree
       end
     end
+
+    def height
+      @map_data.length
+    end
   end
 
   RSpec.describe Map do
@@ -36,7 +40,7 @@ module AoC::Year2020::Day3
 
     let(:map) { described_class.new(input) }
 
-    describe "#height", :pending do
+    describe "#height" do
       it "returns the height of the map" do
         expect(map.height).to eq 11
       end
