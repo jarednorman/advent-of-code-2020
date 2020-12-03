@@ -36,6 +36,12 @@ module AoC::Year2020::Day3
 
     let(:map) { described_class.new(input) }
 
+    describe "#height", :pending do
+      it "returns the height of the map" do
+        expect(map.height).to eq 11
+      end
+    end
+
     describe "#get" do
       it "returns no tree when there's no tree" do
         expect(map.get(0, 0)).to eq :empty
