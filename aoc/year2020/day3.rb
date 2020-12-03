@@ -67,7 +67,19 @@ module AoC::Year2020::Day3
     end
 
     def solution
-      0
+      map = Map.new(input)
+
+      x, y = 0, 0
+      trees = 0
+
+      while y < map.height
+        trees += 1 if map.get(x, y) == :tree
+
+        x += 3
+        y += 1
+      end
+
+      trees
     end
 
     private
@@ -87,7 +99,7 @@ module AoC::Year2020::Day3
 
       include_context "sample input"
 
-      it "matches what they told us", :pending do
+      it "matches what they told us" do
         expect(subject).to eq 7
       end
     end
