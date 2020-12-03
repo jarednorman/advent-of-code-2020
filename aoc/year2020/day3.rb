@@ -67,8 +67,6 @@ module AoC::Year2020::Day3
     end
 
     def solution
-      map = Map.new(input)
-
       x, y = 0, 0
       trees = 0
 
@@ -88,6 +86,10 @@ module AoC::Year2020::Day3
 
     def real_input
       @input ||= File.read("aoc/year2020/day3.txt")
+    end
+
+    def map
+      @map ||= Map.new(input)
     end
   end
 
