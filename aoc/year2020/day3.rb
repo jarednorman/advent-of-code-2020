@@ -113,7 +113,13 @@ module AoC::Year2020::Day3
 
   class Part2 < Part1
     def solution
-      0
+      [[1, 1],
+      [3, 1],
+      [5, 1],
+      [7, 1],
+      [1, 2]].map do |sx, sy|
+        count_trees sx, sy
+      end.inject(&:*)
     end
   end
 
@@ -125,7 +131,7 @@ module AoC::Year2020::Day3
 
       include_context "sample input"
 
-      it "does the right thing", :pending do
+      it "does the right thing" do
         expect(subject).to eq 336
       end
     end
