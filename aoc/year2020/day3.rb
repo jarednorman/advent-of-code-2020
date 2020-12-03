@@ -2,8 +2,25 @@ module AoC::Year2020::Day3
   RSpec.shared_context "sample input" do
     let(:input) {
       <<~INPUT
+        ..##.......
+        #...#...#..
+        .#....#..#.
+        ..#.#...#.#
+        .#...##..#.
+        ..#.##.....
+        .#.#.#....#
+        .#........#
+        #.##...#...
+        #...##....#
+        .#..#...#.#
       INPUT
     }
+  end
+
+  class Map
+  end
+
+  RSpec.describe Map do
   end
 
   class Part1
