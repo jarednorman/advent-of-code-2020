@@ -130,13 +130,17 @@ module AoC::Year2020::Day4
 
     def solution
       Parser.parse(input).count do |record|
-        Passport.new(record).valid?
+        passport_class.new(record).valid?
       end
     end
 
     private
 
     attr_reader :input
+
+    def passport_class
+      Passport
+    end
 
     def real_input
       @input ||= File.read("aoc/year2020/day4.txt")
@@ -158,9 +162,6 @@ module AoC::Year2020::Day4
   end
 
   class Part2 < Part1
-    def solution
-      0
-    end
   end
 
   RSpec.describe Part2 do
