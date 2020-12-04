@@ -202,6 +202,11 @@ module AoC::Year2020::Day4
         let(:hcl) { "foo" }
         it { is_expected.to eq false }
       end
+
+      context "when the ecl invalid", :pending do
+        let(:ecl) { "foo" }
+        it { is_expected.to eq false }
+      end
     end
   end
 
