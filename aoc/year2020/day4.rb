@@ -161,6 +161,38 @@ module AoC::Year2020::Day4
     end
   end
 
+  class Passport2 < Passport
+  end
+
+  RSpec.describe Passport2 do
+    describe "#valid?" do
+      subject { described_class.new(record).valid? }
+
+      let(:record) {
+        {
+          hcl: hcl,
+          iyr: iyr,
+          eyr: eyr,
+          ecl: ecl,
+          pid: pid,
+          byr: byr,
+          hgt: hgt
+        }
+      }
+      let(:hcl) { "#623a2f" }
+      let(:iyr) { "2012" }
+      let(:eyr) { "2030" }
+      let(:ecl) { "grn" }
+      let(:pid) { "087499704" }
+      let(:byr) { "1980" }
+      let(:hgt) { "74in" }
+
+      it "is valid" do
+        expect(subject).to eq true
+      end
+    end
+  end
+
   class Part2 < Part1
   end
 
