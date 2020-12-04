@@ -19,6 +19,48 @@ module AoC::Year2020::Day4
     }
   end
 
+  module Parser
+  end
+
+  RSpec.describe Parser do
+    subject { described_class.parse(records) }
+
+    let(:records) {
+      <<~RECORDS
+        iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
+        hcl:#cfa07d byr:1929
+
+        hcl:#ae17e1 iyr:2013
+        eyr:2024
+        ecl:brn pid:760753108 byr:1931
+        hgt:179cm
+      RECORDS
+    }
+                    
+    it "parses inputs", :pending do
+      expect(subject).to eq([
+        {
+          iyr: "2013",
+          ecl: "amb",
+          cid: "350",
+          eyr: "2023",
+          pid: "028048884",
+          hcl: "#cfa07d",
+          byr: "1929"
+        },
+        {
+          hcl: "#ae17e1",
+          iyr: "2013",
+          eyr: "2024",
+          ecl: "brn",
+          pid: "760753108",
+          byr: "1931",
+          hgt: "179cm"
+        }
+      ])
+    end
+  end
+
   class Part1
     def initialize(input = real_input)
       @input = input
