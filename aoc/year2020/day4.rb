@@ -72,6 +72,12 @@ module AoC::Year2020::Day4
   end
 
   class Passport
+    def initialize(record)
+      @record = record
+    end
+
+    def valid?
+    end
   end
 
   RSpec.describe Passport do
