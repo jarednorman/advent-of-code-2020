@@ -190,6 +190,11 @@ module AoC::Year2020::Day4
       it "is valid" do
         expect(subject).to eq true
       end
+
+      context "when the hcl invalid", :pending do
+        let(:hcl) { "foo" }
+        it { is_expected.to eq false }
+      end
     end
   end
 
