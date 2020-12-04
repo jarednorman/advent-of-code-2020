@@ -167,7 +167,7 @@ module AoC::Year2020::Day4
     end
 
     def hcl_valid?
-      true
+      /#[0-9a-f]{6}/.match?(@record[:hcl])
     end
   end
 
@@ -198,7 +198,7 @@ module AoC::Year2020::Day4
         expect(subject).to eq true
       end
 
-      context "when the hcl invalid", :pending do
+      context "when the hcl invalid" do
         let(:hcl) { "foo" }
         it { is_expected.to eq false }
       end
