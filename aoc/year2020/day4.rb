@@ -212,6 +212,11 @@ module AoC::Year2020::Day4
         expect(subject).to eq true
       end
 
+      context "when the pid invalid", :pending do
+        let(:pid) { "foo" }
+        it { is_expected.to eq false }
+      end
+
       context "when the eyr invalid" do
         let(:eyr) { "foo" }
         it { is_expected.to eq false }
