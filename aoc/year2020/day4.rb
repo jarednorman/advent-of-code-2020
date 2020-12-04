@@ -272,8 +272,8 @@ module AoC::Year2020::Day4
   end
 
   class Part2 < Part1
-    def password_class
-      Password2
+    def passport_class
+      Passport2
     end
   end
 
