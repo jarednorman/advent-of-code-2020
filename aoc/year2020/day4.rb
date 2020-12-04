@@ -163,11 +163,15 @@ module AoC::Year2020::Day4
 
   class Passport2 < Passport
     def valid?
-      super && hcl_valid?
+      super && hcl_valid? && ecl_valid?
     end
 
     def hcl_valid?
       /#[0-9a-f]{6}/.match?(@record[:hcl])
+    end
+
+    def ecl_valid?
+      %w(amb blu brn gry grn hzl oth).include? @record[:ecl]
     end
   end
 
@@ -203,7 +207,7 @@ module AoC::Year2020::Day4
         it { is_expected.to eq false }
       end
 
-      context "when the ecl invalid", :pending do
+      context "when the ecl invalid" do
         let(:ecl) { "foo" }
         it { is_expected.to eq false }
       end
