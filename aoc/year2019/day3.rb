@@ -31,6 +31,8 @@ module AoC::Year2019::Day3
       subject { instance.solution }
 
       include_context "sample input"
+
+      it { is_expected.to eq 0 }
     end
   end
 
