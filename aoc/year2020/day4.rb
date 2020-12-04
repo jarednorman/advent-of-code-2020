@@ -169,6 +169,10 @@ module AoC::Year2020::Day4
     def hgt_valid?
       return false unless /\A\d+(in|cm)\z/.match?(@record[:hgt])
 
+      unit = /\A\d+(in|cm)\z/.match(@record[:hgt])[1]
+      height = @record[:hgt].to_i
+
+
       true
     end
 
