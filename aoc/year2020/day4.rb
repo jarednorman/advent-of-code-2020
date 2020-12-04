@@ -129,7 +129,9 @@ module AoC::Year2020::Day4
     end
 
     def solution
-      0
+      Parser.parse(input).count do |record|
+        Passport.new(record).valid?
+      end
     end
 
     private
@@ -149,7 +151,7 @@ module AoC::Year2020::Day4
 
       include_context "sample input"
 
-      it "solves the sample input", :pending do
+      it "solves the sample input" do
         expect(subject).to eq 2
       end
     end
