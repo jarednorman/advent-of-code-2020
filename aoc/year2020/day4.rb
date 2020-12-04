@@ -162,6 +162,13 @@ module AoC::Year2020::Day4
   end
 
   class Passport2 < Passport
+    def valid?
+      super && hcl_valid?
+    end
+
+    def hcl_valid?
+      true
+    end
   end
 
   RSpec.describe Passport2 do
