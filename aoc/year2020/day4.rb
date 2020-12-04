@@ -272,6 +272,9 @@ module AoC::Year2020::Day4
   end
 
   class Part2 < Part1
+    def password_class
+      Password2
+    end
   end
 
   RSpec.describe Part2 do
