@@ -172,7 +172,11 @@ module AoC::Year2020::Day4
       unit = /\A\d+(in|cm)\z/.match(@record[:hgt])[1]
       height = @record[:hgt].to_i
 
-
+      if unit == "cm"
+        height >= 150 && height <= 193
+      else
+        height >= 59 && height <= 76
+      end
       true
     end
 
