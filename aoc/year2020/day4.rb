@@ -77,6 +77,7 @@ module AoC::Year2020::Day4
     end
 
     def valid?
+      (@record.keys - [:cid]).length == 7
     end
   end
 
@@ -97,7 +98,7 @@ module AoC::Year2020::Day4
           }
         }
 
-        it "returns true", :pending do
+        it "returns true" do
           expect(subject).to eq true
         end
       end
@@ -115,7 +116,7 @@ module AoC::Year2020::Day4
           }
         }
 
-        it "returns false", :pending do
+        it "returns false" do
           expect(subject).to eq false
         end
       end
