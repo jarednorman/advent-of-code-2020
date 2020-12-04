@@ -163,7 +163,13 @@ module AoC::Year2020::Day4
 
   class Passport2 < Passport
     def valid?
-      super && hcl_valid? && ecl_valid? && iyr_valid? && eyr_valid? && pid_valid? && byr_valid?
+      super && hcl_valid? && ecl_valid? && iyr_valid? && eyr_valid? && pid_valid? && byr_valid? && hgt_valid?
+    end
+
+    def hgt_valid?
+      return false unless /\A\d+(in|cm)\z/.match?(@record[:hgt])
+
+      true
     end
 
     def byr_valid?
@@ -221,7 +227,7 @@ module AoC::Year2020::Day4
         expect(subject).to eq true
       end
 
-      context "when the hgt invalid", :pending do
+      context "when the hgt invalid" do
         let(:hgt) { "foo" }
         it { is_expected.to eq false }
       end
