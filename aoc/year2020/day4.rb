@@ -20,6 +20,10 @@ module AoC::Year2020::Day4
   end
 
   module Parser
+    class << self
+      def parse(input)
+      end
+    end
   end
 
   RSpec.describe Parser do
