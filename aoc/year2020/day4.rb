@@ -163,7 +163,12 @@ module AoC::Year2020::Day4
 
   class Passport2 < Passport
     def valid?
-      super && hcl_valid? && ecl_valid? && iyr_valid?
+      super && hcl_valid? && ecl_valid? && iyr_valid? && eyr_valid?
+    end
+
+    def eyr_valid?
+      eyr = @record[:eyr].to_i
+      eyr && eyr >= 2020 && eyr <= 2030
     end
 
     def hcl_valid?
@@ -205,6 +210,11 @@ module AoC::Year2020::Day4
 
       it "is valid" do
         expect(subject).to eq true
+      end
+
+      context "when the eyr invalid" do
+        let(:eyr) { "foo" }
+        it { is_expected.to eq false }
       end
 
       context "when the iyr invalid" do
