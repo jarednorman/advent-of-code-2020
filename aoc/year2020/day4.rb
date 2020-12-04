@@ -163,7 +163,11 @@ module AoC::Year2020::Day4
 
   class Passport2 < Passport
     def valid?
-      super && hcl_valid? && ecl_valid? && iyr_valid? && eyr_valid?
+      super && hcl_valid? && ecl_valid? && iyr_valid? && eyr_valid? && pid_valid?
+    end
+
+    def pid_valid?
+      /\A\d{9}\z/.match?(@record[:pid])
     end
 
     def eyr_valid?
@@ -212,7 +216,7 @@ module AoC::Year2020::Day4
         expect(subject).to eq true
       end
 
-      context "when the pid invalid", :pending do
+      context "when the pid invalid" do
         let(:pid) { "foo" }
         it { is_expected.to eq false }
       end
