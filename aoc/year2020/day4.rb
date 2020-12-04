@@ -22,6 +22,12 @@ module AoC::Year2020::Day4
   module Parser
     class << self
       def parse(input)
+        input.split("\n\n").map do |record|
+          record.split(/\s/).each_with_object({}) do |pair, memo|
+            key, value = pair.split(":")
+            memo[key.to_i] = value
+          end
+        end
       end
     end
   end
