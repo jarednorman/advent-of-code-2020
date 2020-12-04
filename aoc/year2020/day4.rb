@@ -25,7 +25,7 @@ module AoC::Year2020::Day4
         input.split("\n\n").map do |record|
           record.split(/\s/).each_with_object({}) do |pair, memo|
             key, value = pair.split(":")
-            memo[key.to_i] = value
+            memo[key.to_sym] = value
           end
         end
       end
@@ -47,7 +47,7 @@ module AoC::Year2020::Day4
       RECORDS
     }
                     
-    it "parses inputs", :pending do
+    it "parses inputs" do
       expect(subject).to eq([
         {
           iyr: "2013",
