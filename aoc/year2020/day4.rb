@@ -176,7 +176,7 @@ module AoC::Year2020::Day4
     end
 
     def hcl_valid?
-      /#[0-9a-f]{6}/.match?(@record[:hcl])
+      /\A#[0-9a-f]{6}\z/.match?(@record[:hcl])
     end
 
     def ecl_valid?
