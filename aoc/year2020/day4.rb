@@ -177,7 +177,6 @@ module AoC::Year2020::Day4
       else
         height >= 59 && height <= 76
       end
-      true
     end
 
     def byr_valid?
