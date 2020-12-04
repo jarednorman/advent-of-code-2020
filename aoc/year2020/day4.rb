@@ -71,6 +71,51 @@ module AoC::Year2020::Day4
     end
   end
 
+  class Passport
+  end
+
+  RSpec.describe Passport do
+    describe "#valid?" do
+      subject { described_class.new(record).valid? }
+
+      context "when it is valid" do
+        let(:record) {
+          {
+            hcl: "#ae17e1",
+            iyr: "2013",
+            eyr: "2024",
+            ecl: "brn",
+            pid: "760753108",
+            byr: "1931",
+            hgt: "179cm"
+          }
+        }
+
+        it "returns true", :pending do
+          expect(subject).to eq true
+        end
+      end
+
+      context "when it is not valid" do
+        let(:record) {
+          {
+            iyr: "2013",
+            ecl: "amb",
+            cid: "350",
+            eyr: "2023",
+            pid: "028048884",
+            hcl: "#cfa07d",
+            byr: "1929"
+          }
+        }
+
+        it "returns false", :pending do
+          expect(subject).to eq false
+        end
+      end
+    end
+  end
+
   class Part1
     def initialize(input = real_input)
       @input = input
