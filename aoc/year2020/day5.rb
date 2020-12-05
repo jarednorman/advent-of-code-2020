@@ -39,6 +39,10 @@ module AoC::Year2020::Day5
 
       arr.first
     end
+
+    def id
+      row * 8 + column
+    end
   end
 
   RSpec.describe BoardingPass do
@@ -58,7 +62,7 @@ module AoC::Year2020::Day5
       expect(pass3.column).to eq 4
     end
 
-    it "computes ids", :pending do
+    it "computes ids" do
       expect(pass1.id).to eq 567
       expect(pass2.id).to eq 119
       expect(pass3.id).to eq 820
