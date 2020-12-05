@@ -82,18 +82,23 @@ module AoC::Year2020::Day5
 
     attr_reader :input
 
+    def boarding_passes
+    end
+
     def real_input
       @input ||= File.read("aoc/year2020/day5.txt")
     end
   end
 
   RSpec.describe Part1 do
-    let(:instance) { described_class.new(input) }
+    let(:instance) { described_class.new }
 
     describe "#solution" do
       subject { instance.solution }
 
       include_context "sample input"
+
+      it { is_expected.to eq 955 }
     end
   end
 
