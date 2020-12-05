@@ -11,6 +11,10 @@ module AoC::Year2020::Day5
       @row_steps = partition.chars[0..6]
       @col_steps = partition.chars[7..9]
     end
+
+    def row
+      arr = (0..127).to_a
+    end
   end
 
   RSpec.describe BoardingPass do
