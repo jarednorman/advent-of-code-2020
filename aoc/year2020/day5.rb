@@ -105,7 +105,7 @@ module AoC::Year2020::Day5
 
   class Part2 < Part1
     def solution
-      h = boarding_pass.group_by(&:id)
+      h = boarding_passes.group_by(&:id)
       h.each do |id, bp|
         return bp.id if h[id + 1] && h[id - 1]
       end
