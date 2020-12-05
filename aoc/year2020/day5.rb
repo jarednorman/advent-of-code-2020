@@ -7,22 +7,33 @@ module AoC::Year2020::Day5
   end
 
   class BoardingPass
+    def initialize(partition)
+      @row_steps = partition.chars[0..6]
+      @col_steps = partition.chars[7..9]
+    end
   end
 
   RSpec.describe BoardingPass do
-    it "works for the examples", :pending do
-      pass = described_class.new("BFFFBBFRRR")
-      expect(pass.row).to eq 70
-      expect(pass.column).to eq 7
-      expect(pass.id).to eq 567
-      pass = described_class.new("FFFBBBFRRR")
-      expect(pass.row).to eq 14
-      expect(pass.column).to eq 7
-      expect(pass.id).to eq 119
-      pass = described_class.new("BBFFBBFRLL")
-      expect(pass.row).to eq 102
-      expect(pass.column).to eq 4
-      expect(pass.id).to eq 820
+    let(:pass1) { described_class.new("BFFFBBFRRR") }
+    let(:pass2) { described_class.new("FFFBBBFRRR") }
+    let(:pass3) { described_class.new("BBFFBBFRLL") }
+
+    it "computes rows", :pending do
+      expect(pass1.row).to eq 70
+      expect(pass2.row).to eq 14
+      expect(pass3.row).to eq 102
+    end
+
+    it "computes columns", :pending do
+      expect(pass1.column).to eq 7
+      expect(pass2.column).to eq 7
+      expect(pass3.column).to eq 4
+    end
+
+    it "computes ids", :pending do
+      expect(pass1.id).to eq 567
+      expect(pass2.id).to eq 119
+      expect(pass3.id).to eq 820
     end
   end
 
