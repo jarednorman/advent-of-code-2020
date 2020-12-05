@@ -15,7 +15,7 @@ module AoC::Year2020::Day5
     def row
       arr = (0..127).to_a
 
-      @col_steps.each do |step|
+      @row_steps.each do |step|
         if step == "F"
           arr = arr[0..arr.length/2-1]
         else
@@ -23,7 +23,7 @@ module AoC::Year2020::Day5
         end
       end
 
-      arr
+      arr.first
     end
   end
 
@@ -32,7 +32,7 @@ module AoC::Year2020::Day5
     let(:pass2) { described_class.new("FFFBBBFRRR") }
     let(:pass3) { described_class.new("BBFFBBFRLL") }
 
-    it "computes rows", :pending do
+    it "computes rows" do
       expect(pass1.row).to eq 70
       expect(pass2.row).to eq 14
       expect(pass3.row).to eq 102
