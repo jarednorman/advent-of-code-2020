@@ -75,7 +75,7 @@ module AoC::Year2020::Day5
     end
 
     def solution
-      0
+      input.split("\n").map {|x| BoardingPass.new(x).id }.max
     end
 
     private
