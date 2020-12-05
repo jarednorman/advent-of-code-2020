@@ -25,6 +25,20 @@ module AoC::Year2020::Day5
 
       arr.first
     end
+
+    def column
+      arr = (0..7).to_a
+
+      @col_steps.each do |step|
+        if step == "L"
+          arr = arr[0..arr.length/2-1]
+        else
+          arr = arr[arr.length/2..-1]
+        end
+      end
+
+      arr.first
+    end
   end
 
   RSpec.describe BoardingPass do
@@ -38,7 +52,7 @@ module AoC::Year2020::Day5
       expect(pass3.row).to eq 102
     end
 
-    it "computes columns", :pending do
+    it "computes columns" do
       expect(pass1.column).to eq 7
       expect(pass2.column).to eq 7
       expect(pass3.column).to eq 4
