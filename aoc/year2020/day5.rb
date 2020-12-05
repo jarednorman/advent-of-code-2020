@@ -106,7 +106,7 @@ module AoC::Year2020::Day5
   class Part2 < Part1
     def solution
       h = boarding_passes.group_by(&:id)
-      h.each do |id, bp|
+      ((0..127*8+7).to_a - h.keys).each do |id|
         return id if h[id + 1] && h[id - 1]
       end
     end
