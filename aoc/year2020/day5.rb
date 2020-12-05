@@ -15,13 +15,15 @@ module AoC::Year2020::Day5
     def row
       arr = (0..127).to_a
 
-      @col_steps.map do |step|
+      @col_steps.each do |step|
         if step == "F"
           arr = arr[0..arr.length/2-1]
         else
           arr = arr[arr.length/2..-1]
         end
       end
+
+      arr
     end
   end
 
