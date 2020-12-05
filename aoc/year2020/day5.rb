@@ -75,7 +75,7 @@ module AoC::Year2020::Day5
     end
 
     def solution
-      input.split("\n").map {|x| BoardingPass.new(x).id }.max
+      boarding_passes.map(&:id).max
     end
 
     private
@@ -83,6 +83,7 @@ module AoC::Year2020::Day5
     attr_reader :input
 
     def boarding_passes
+      input.split("\n").map {|x| BoardingPass.new(x) }
     end
 
     def real_input
