@@ -43,20 +43,13 @@ module AoC
         mod = AoC.const_get(day_const_string)
 
         if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
-          if dirty_git?
-            commit "Tests pass for year #{year} day #{day}"
-            puts
-          end
-
           klass = mod.const_get("Part#{part}")
           puts "\u001b[34;1mSolution for year #{year} day #{day} part #{part}: \u001b[31;1m#{klass.new.solution}\u001b[0m\n"
-        else
-          system(*%W(git reset --hard))
         end
       else
         puts "Generating year #{year} day #{day}!"
 
-        FileUtils.mkdir_p File.dirname(day_directory_path) 
+        FileUtils.mkdir_p File.dirname(day_directory_path)
 
         generate_file(
           path: year_path,
@@ -72,8 +65,6 @@ module AoC
           path: input_path,
           contents: input_data
         )
-
-        commit "Generate year #{year} day #{day}"
       end
 
       0
@@ -82,11 +73,6 @@ module AoC
     private
 
     attr_reader :day, :year, :part
-
-    def commit(message)
-      system(*%W(git add .))
-      system(*%W(git commit -m #{message}))
-    end
 
     def generate_file(contents:, path:)
       File.write(path, contents) unless File.exist?(input_path)
@@ -126,10 +112,6 @@ module AoC
 
     def year_const_string
       "Year#{year}"
-    end
-
-    def dirty_git?
-      `git status --porcelain=v1 2>/dev/null | wc -l`.strip.to_i != 0
     end
 
     def input_data
