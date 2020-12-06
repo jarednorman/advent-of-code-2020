@@ -17,9 +17,23 @@ module AoC::<%= day_const_string %>
     end
   end
 
+  class Part1Test < Minitest::Test
+    def test_sample_input
+      assert_equal 0, Part1.new(<<~INPUT).solution
+      INPUT
+    end
+  end
+
   class Part2 < Part1
     def solution
       0
+    end
+  end
+
+  class Part2Test < Minitest::Test
+    def test_sample_input
+      assert_equal 0, Part2.new(<<~INPUT).solution
+      INPUT
     end
   end
 end
