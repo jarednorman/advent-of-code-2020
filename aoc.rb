@@ -5,6 +5,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'rubygems'
 require 'bundler/setup'
 Bundler.require(:default)
+require 'minitest/pride'
 
 require 'fileutils'
 require 'erb'
@@ -42,10 +43,10 @@ module AoC
         # This loads both parts, assuming they are in the same file.
         mod = AoC.const_get(day_const_string)
 
-        if RSpec::Core::Runner.run([], STDERR, STDOUT) == 0
-          klass = mod.const_get("Part#{part}")
-          puts "\u001b[34;1mSolution for year #{year} day #{day} part #{part}: \u001b[31;1m#{klass.new.solution}\u001b[0m\n"
-        end
+        Minitest.run
+
+        klass = mod.const_get("Part#{part}")
+        puts "\n\u001b[34mSolution for year #{year} day #{day} part #{part}: \u001b[31;1m#{klass.new.solution}\u001b[0m\n"
       else
         puts "Generating year #{year} day #{day}!"
 
