@@ -118,13 +118,30 @@ module AoC::Year2020::Day7
 
   class Part2 < Part1
     def solution
-      0
+      process("shiny gold")
+    end
+
+    private
+
+    attr_reader :input
+
+    def process(type)
+      input[type].sum do |type, count|
+        count + process(type) * count
+      end
     end
   end
 
   class Part2Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+      assert_equal 126, Part2.new(<<~INPUT).solution
+        shiny gold bags contain 2 dark red bags.
+        dark red bags contain 2 dark orange bags.
+        dark orange bags contain 2 dark yellow bags.
+        dark yellow bags contain 2 dark green bags.
+        dark green bags contain 2 dark blue bags.
+        dark blue bags contain 2 dark violet bags.
+        dark violet bags contain no other bags.
       INPUT
     end
   end
