@@ -40,42 +40,51 @@ module AoC::Year2020::Day8
     end
   end
 
-  Machine = Struct.new(:program, :pointer, :accumulator) do
+  Machine = Struct.new(:program, :pointer, :accumulator, :prev_pointers) do
     def next
-      case instruction.first
-      when :nop then Machine.new(program, pointer + 1, accumulator)
-      when :acc then Machine.new(program, pointer + 1, accumulator + instruction.last)
-      when :jmp then Machine.new(program, pointer + instruction.last, accumulator)
-      end
+      new_machine unless prev_pointers.include?(new_machine.pointer)
     end
-
-    private
 
     def instruction
       @instruction ||= program[pointer]
     end
+
+    def new_machine
+      case instruction.first
+      when :nop then Machine.new(program, pointer + 1, accumulator, prev_pointers + [pointer])
+      when :acc then Machine.new(program, pointer + 1, accumulator + instruction.last, prev_pointers + [pointer])
+      when :jmp then Machine.new(program, pointer + instruction.last, accumulator, prev_pointers + [pointer])
+      end
+    end
   end
 
   class MachineTest < Minitest::Test
+    def test_loop
+      program = [[:nop, 0], [:jmp, -1], [:nop, 0]]
+      machine = Machine.new(program, 0, 0, [])
+
+      assert_nil machine.next.next
+    end
+
     def test_nop
       program = [[:nop, 0], [:nop, 0], [:nop, 0]]
-      machine = Machine.new(program, 0, 0)
+      machine = Machine.new(program, 0, 0, [])
 
-      assert_equal Machine.new(program, 1, 0), machine.next
+      assert_equal Machine.new(program, 1, 0, [0]), machine.next
     end
 
     def test_acc
       program = [[:nop, 0], [:acc, 3], [:nop, 0]]
-      machine = Machine.new(program, 1, 0)
+      machine = Machine.new(program, 1, 0, [])
 
-      assert_equal Machine.new(program, 2, 3), machine.next
+      assert_equal Machine.new(program, 2, 3, [1]), machine.next
     end
 
     def test_jmp
       program = [[:nop, 0], [:acc, 3], [:jmp, -2]]
-      machine = Machine.new(program, 2, 3)
+      machine = Machine.new(program, 2, 3, [])
 
-      assert_equal Machine.new(program, 0, 3), machine.next
+      assert_equal Machine.new(program, 0, 3, [2]), machine.next
     end
   end
 
@@ -85,15 +94,13 @@ module AoC::Year2020::Day8
     end
 
     def solution
-      states = {}
-      machine = Machine.new(input, 0, 0)
+      machine = Machine.new(input, 0, 0, [])
 
-      while !states[machine.pointer]
-        states[machine.pointer] = true
-        machine = machine.next
+      loop do
+        next_machine = machine.next
+        return machine.accumulator if next_machine.nil?
+        machine = next_machine
       end
-
-      machine.accumulator
     end
 
     private
@@ -123,13 +130,44 @@ module AoC::Year2020::Day8
 
   class Part2 < Part1
     def solution
-      0
+      @states = {}
+      machine = Machine.new(input, 0, 0)
+
+      return 0
+      step(machine).accumulator
+    end
+
+    def step(machine)
+      return nil if @states[machine.pointer]
+
+      @states[machine.pointer] = true
+
+      if machine.pointer == machine.program.length
+        machine
+      elsif [:nop, :jmp].include?(machine.instruction.first)
+        step(machine.next) || begin
+          program = machine.program.dup
+          program[machine.pointer] = [{nop: :jmp, jmp: :nop}[machine.instruction.first], machine.instruction.last]
+          step(Machine.new(program, machine.pointer, machine.accumulator))
+        end
+      else
+        step(machine.next)
+      end
     end
   end
 
   class Part2Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+      assert_equal 8, Part2.new(<<~INPUT).solution
+        nop +0
+        acc +1
+        jmp +4
+        acc +3
+        jmp -3
+        acc -99
+        acc +1
+        jmp -4
+        acc +6
       INPUT
     end
   end
