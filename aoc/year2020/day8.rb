@@ -130,28 +130,24 @@ module AoC::Year2020::Day8
 
   class Part2 < Part1
     def solution
-      @states = {}
-      machine = Machine.new(input, 0, 0)
+      input.each_with_index.select do |instruction, index|
+        [:nop, :jmp].include?(instruction.first)
+      end.map(&:last).each do |index|
+        program = input.dup
+        program[index] = [{jmp: :nop, nop: :jmp}[program[index].first], program[index].last]
 
-      return 0
-      step(machine).accumulator
+        machine = compute(Machine.new(program, 0, 0, []))
+        return machine.accumulator if machine
+      end
     end
 
-    def step(machine)
-      return nil if @states[machine.pointer]
-
-      @states[machine.pointer] = true
-
-      if machine.pointer == machine.program.length
+    def compute(machine)
+      if machine.nil?
+        nil
+      elsif machine.pointer == machine.program.length
         machine
-      elsif [:nop, :jmp].include?(machine.instruction.first)
-        step(machine.next) || begin
-          program = machine.program.dup
-          program[machine.pointer] = [{nop: :jmp, jmp: :nop}[machine.instruction.first], machine.instruction.last]
-          step(Machine.new(program, machine.pointer, machine.accumulator))
-        end
       else
-        step(machine.next)
+        compute(machine.next)
       end
     end
   end
