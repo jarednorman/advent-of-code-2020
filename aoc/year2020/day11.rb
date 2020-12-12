@@ -15,14 +15,14 @@ module AoC::Year2020::Day11
     end
 
     def next
-      SeatMap.new(
+      self.class.new(
         map.each_with_index.map do |row, y|
           row.each_with_index.map do |cell, x|
             next :floor if cell == :floor
 
             next :taken if cell == :empty && adjacent_seats(x, y) == 0
 
-            next :empty if cell == :taken && adjacent_seats(x, y) >= 4
+            next :empty if cell == :taken && adjacent_seats(x, y) >= too_many_count
 
             cell
           end
@@ -30,8 +30,24 @@ module AoC::Year2020::Day11
       )
     end
 
+    def too_many_count
+      4
+    end
+
     def taken_count
       map.flatten.count(:taken)
+    end
+
+    def inspect
+      map.map do |row|
+        row.map do |cell|
+          case cell
+          when :floor then "."
+          when :taken then "#"
+          when :empty then "L"
+          end
+        end.join("")
+      end.join("\n")
     end
 
     private
@@ -136,7 +152,7 @@ module AoC::Year2020::Day11
     end
 
     def solution
-      map = SeatMap.parse(input)
+      map = map_class.parse(input)
 
       loop do
         new_map = map.next
@@ -153,6 +169,10 @@ module AoC::Year2020::Day11
 
     attr_reader :input
 
+    def map_class
+      SeatMap
+    end
+
     def real_input
       @input ||= File.read("aoc/year2020/day11.txt")
     end
@@ -165,9 +185,94 @@ module AoC::Year2020::Day11
     end
   end
 
+  class SeatMap2 < SeatMap
+    def too_many_count
+      5
+    end
+ 
+    def adjacent_seats(x, y)
+      [
+        [ 0, -1], # N
+        [ 1, -1], # NE
+        [ 1,  0], # E
+        [ 1,  1], # SE
+        [ 0,  1], # S
+        [-1,  1], # SW
+        [-1,  0], # W
+        [-1, -1] # NW
+      ].map { |direction|
+        look(x, y, direction)
+      }.tap { |counts|
+      }.count { |result|
+        result == :taken
+      }
+    end
+
+    # @return [:taken, :empty]
+    def look(x, y, direction)
+      loop do
+        x += direction[0]
+        y += direction[1]
+
+        return :floor unless x >= 0 && y >= 0 && x < width && y < height
+
+        return map[y][x] unless map[y][x] == :floor
+      end
+    end
+  end
+
+  class SeatMap2Test < Minitest::Test
+    def test_example_next
+      map = SeatMap2.parse(example_layout)
+
+      assert_equal SeatMap2.parse(<<~MAP
+        #.##.##.##
+        #######.##
+        #.#.#..#..
+        ####.##.##
+        #.##.##.##
+        #.#####.##
+        ..#.#.....
+        ##########
+        #.######.#
+        #.#####.##
+      MAP
+      ), map.next
+
+      assert_equal SeatMap2.parse(<<~MAP
+        #.LL.LL.L#
+        #LLLLLL.LL
+        L.L.L..L..
+        LLLL.LL.LL
+        L.LL.LL.LL
+        L.LLLLL.LL
+        ..L.L.....
+        LLLLLLLLL#
+        #.LLLLLL.L
+        #.LLLLL.L#
+      MAP
+      ), map.next.next
+    end
+
+    def example_layout
+      <<~MAP
+        L.LL.LL.LL
+        LLLLLLL.LL
+        L.L.L..L..
+        LLLL.LL.LL
+        L.LL.LL.LL
+        L.LLLLL.LL
+        ..L.L.....
+        LLLLLLLLLL
+        L.LLLLLL.L
+        L.LLLLL.LL
+      MAP
+    end
+  end
+
   class Part2 < Part1
-    def solution
-      0
+    def map_class
+      SeatMap2
     end
   end
 
