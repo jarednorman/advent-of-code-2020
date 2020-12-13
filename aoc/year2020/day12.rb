@@ -148,9 +148,127 @@ module AoC::Year2020::Day12
   class Part1Test < Minitest::Test
   end
 
+  class Ship2
+    def initialize(waypoint: Vector[10, 1], location: Vector[0, 0])
+      @waypoint = waypoint
+      @location = location
+    end
+
+    attr_reader :location, :waypoint
+
+    def next(instruction)
+      command = instruction[0]
+      param = instruction[1..-1].to_i
+
+      case command
+      when "F"
+        self.class.new(
+          waypoint: waypoint,
+          location: location + waypoint * param
+        )
+      when "N"
+        self.class.new(
+          waypoint: waypoint + NORTH * param,
+          location: location
+        )
+      when "S"
+        self.class.new(
+          waypoint: waypoint + SOUTH * param,
+          location: location
+        )
+      when "E"
+        self.class.new(
+          waypoint: waypoint + EAST * param,
+          location: location
+        )
+      when "W"
+        self.class.new(
+          waypoint: waypoint + WEST * param,
+          location: location
+        )
+      when "R"
+        self.class.new(
+          waypoint: rotate_right(waypoint, param/90),
+          location: location
+        )
+      when "L"
+        self.class.new(
+          waypoint: rotate_left(waypoint, param/90),
+          location: location
+        )
+      else
+        self
+      end
+    end
+
+    def rotate_right(vec, times)
+      times.times do
+        x = vec[0]
+        y = vec[1]
+        vec = Vector[y, -x]
+      end
+
+      vec
+    end
+
+    def rotate_left(vec, times)
+      times.times do
+        x = vec[0]
+        y = vec[1]
+        vec = Vector[-y, x]
+      end
+
+      vec
+    end
+
+    def manhattan_distance
+      location.to_a.map(&:abs).sum
+    end
+  end
+
+  # [1, 2]
+  # rotate right: [2, -1]
+  # rotate right: [-1, -2]
+  # rotate right: [-2, 1]
+  # rotate right: [1, 2]
+
+  class Ship2Test < Minitest::Test
+    def test_navigation
+      ship = Ship2.new
+      assert_equal 0, ship.manhattan_distance
+      assert_equal Vector[10, 1], ship.waypoint
+
+      ship = ship.next "F10"
+      assert_equal Vector[10, 1], ship.waypoint
+      assert_equal Vector[100, 10], ship.location
+
+      ship = ship.next "N3"
+      assert_equal Vector[10, 4], ship.waypoint
+      assert_equal Vector[100, 10], ship.location
+
+      ship = ship.next "F7"
+      assert_equal Vector[10, 4], ship.waypoint
+      assert_equal Vector[170, 38], ship.location
+
+      ship = ship.next "R90"
+      assert_equal Vector[4, -10], ship.waypoint
+      assert_equal Vector[170, 38], ship.location
+
+      ship = ship.next "F11"
+      assert_equal Vector[214, -72], ship.location
+      assert_equal 286, ship.manhattan_distance
+    end
+  end
+
   class Part2 < Part1
     def solution
-      0
+      ship = Ship2.new
+
+      input.each do |x|
+        ship = ship.next x
+      end
+
+      ship.manhattan_distance
     end
   end
 
