@@ -40,16 +40,41 @@ module AoC::Year2020::Day13
   end
 
   class Part2 < Part1
+    def initialize(input = real_input)
+      @input = input
+      @buses = input.split("\n").last.split(",").map(&:to_i).each_with_index.reject{ |x, index| x.zero? }
+    end
+
     def solution
-      0
+      buses_seen = []
+      step = 1
+      index = 0
+
+      buses.each do |next_bus|
+        buses_seen << next_bus
+
+        until buses_seen.all? { |bus, offset| (index + offset) % bus == 0 }
+          index += step
+        end
+
+        step = step * next_bus[0]
+      end
+
+      index
     end
   end
 
   class Part2Test < Minitest::Test
-    def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+    def test_sample_inputs
+      assert_equal 1068781, Part2.new(<<~INPUT).solution
+        939
+        7,13,x,x,59,x,31,19
+      INPUT
+
+      assert_equal 1202161486, Part2.new(<<~INPUT).solution
+        939
+        1789,37,47,1889
       INPUT
     end
   end
 end
-
