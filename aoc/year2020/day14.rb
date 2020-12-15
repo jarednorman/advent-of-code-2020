@@ -13,9 +13,50 @@ module AoC::Year2020::Day14
     def masked(mask)
       Word.new(mask.chars.zip(bits).map {|x,y| if x == "X" then y else x end })
     end
+
+    def float(mask)
+      mask = mask.chars
+
+      recur_float(0, mask).map do |b|
+        Word.new(b)
+      end
+    end
+
+    def recur_float(n, mask)
+      if n == bits.length - 1
+        nth_slot n, mask
+      else
+        opts = nth_slot n, mask
+        recur_float(n + 1, mask).flat_map do |opt|
+          opts.map do |o|
+            [o, *opt]
+          end
+        end
+      end
+    end
+
+    def nth_slot(n, mask)
+      if mask[n] == "X"
+        ["0", "1"]
+      elsif mask[n] == "1"
+        ["1"]
+      else
+        [bits[n]]
+      end
+    end
   end
 
   class WordTest < Minitest::Test
+    def test_float
+      word = Word.from_int(42)
+      assert_equal Set[
+        Word.from_int(26),
+        Word.from_int(27),
+        Word.from_int(58),
+        Word.from_int(59)
+      ], Set.new(word.float("000000000000000000000000000000X1001X"))
+    end
+
     def test_from_int
       assert_equal Word.new(["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "1"]), Word.from_int(11)
     end
@@ -114,7 +155,7 @@ module AoC::Year2020::Day14
     end
 
     def solution
-      m = Machine.new
+      m = machine_class.new
       program = Parser.parse(input)
 
       program.each do |instruction|
@@ -125,6 +166,10 @@ module AoC::Year2020::Day14
     end
 
     private
+
+    def machine_class
+      Machine
+    end
 
     attr_reader :input
 
@@ -140,15 +185,49 @@ module AoC::Year2020::Day14
     end
   end
 
+  class Machine2 < Machine
+    def step(inst)
+      case inst
+      when MaskInst then @mask = inst.mask
+      when WriteInst
+        Word.from_int(inst.address).float(mask).each do |address|
+          memory[address.to_i] = inst.value
+        end
+      end
+    end
+  end
+
+  class Machine2Test < Minitest::Test
+    def test_example
+      m = Machine2.new
+
+      m.step MaskInst.new("000000000000000000000000000000X1001X")
+      assert_equal "000000000000000000000000000000X1001X", m.mask
+
+      m.step WriteInst.new(42, Word.from_int(100))
+
+      m.step MaskInst.new("00000000000000000000000000000000X0XX")
+      assert_equal "00000000000000000000000000000000X0XX", m.mask
+
+      m.step WriteInst.new(26, Word.from_int(1))
+
+      assert_equal 208, m.sum
+    end
+  end
+
   class Part2 < Part1
-    def solution
-      0
+    def machine_class
+      Machine2
     end
   end
 
   class Part2Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+      assert_equal 208, Part2.new(<<~INPUT).solution
+        mask = 000000000000000000000000000000X1001X
+        mem[42] = 100
+        mask = 00000000000000000000000000000000X0XX
+        mem[26] = 1
       INPUT
     end
   end
