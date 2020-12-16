@@ -100,7 +100,8 @@ module AoC::Year2020::Day15
         if seen[last].length < 2
           do_number 0, block
         else
-          y = seen[last].last(2).reverse.inject(&:-)
+          a,b = *seen[last]
+          y = b - a
           do_number y, block
         end
       end
@@ -112,8 +113,7 @@ module AoC::Year2020::Day15
 
     def do_number n, block
       @index += 1
-      seen[n] ||= []
-      seen[n] << index
+      seen[n] = [seen[n]&.last, index].compact
       block.call(n)
       @last = n
     end
