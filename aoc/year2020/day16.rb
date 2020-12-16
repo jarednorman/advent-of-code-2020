@@ -112,13 +112,68 @@ module AoC::Year2020::Day16
 
   class Part2 < Part1
     def solution
-      0
+      fields = (0..input[:your].length - 1).map { nil }
+
+      until fields.all?
+        fields.each_with_index.each do |field, index|
+          next if field
+
+          nums = values_at_index index
+          hits = input[:rules].select { |name, ranges|
+            nums.all? { |n|
+              ranges.any? { |r|
+                r.include? n
+              }
+            }
+          }.map(&:first)
+
+          if hits.length == 1
+            hit = hits.first
+            input[:rules].delete(hit)
+            fields[index] = hit
+          end
+        end
+      end
+
+      # This I think works.
+      fields.each_with_index.map do |field, index|
+        if /\Adeparture /.match? field
+          input[:your][index]
+        else
+          1
+        end
+      end.inject(&:*)
+    end
+
+    private
+
+    def values_at_index n
+      valid_nearby.map { |ticket| ticket[n] }
+    end
+
+    def valid_nearby
+      @valid_nearby ||= input[:nearby].select { |ticket| ticket.all? { |n| valid_nums.include?(n) } }
+    end
+
+    def valid_nums
+      @valid_nums ||= Set.new input[:rules].values.flatten.flat_map(&:to_a)
     end
   end
 
   class Part2Test < Minitest::Test
-    def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+    def test_whatever
+      puts Part2.new(<<~INPUT).solution.inspect
+        class: 0-1 or 4-19
+        row: 0-5 or 8-19
+        seat: 0-13 or 16-19
+
+        your ticket:
+        11,12,13
+
+        nearby tickets:
+        3,9,18
+        15,1,5
+        5,14,9
       INPUT
     end
   end
