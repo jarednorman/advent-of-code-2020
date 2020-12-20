@@ -1,27 +1,43 @@
 module AoC::Year2020::Day17
   class State
-    def self.parse(input)
-      h = new_h
+    def self.parse(input, dimensions)
+      h = new_h(dimensions)
 
       input.split("\n").reverse.each_with_index do |line, row|
         line.chars.each_with_index do |x, col|
-          h[col][row][0] = true if x == "#"
+          nested_assign(h, [col, row, *(dimensions - 2).times.map { 0 }]) if x == "#"
         end
       end
 
-      new(h)
+      new(h, dimensions)
     end
 
-    def self.new_h
-      Hash.new { |hash, key|
-        hash[key] = Hash.new { |hash, key|
-          hash[key] = {}
+    def self.new_h(dimensions)
+      if dimensions == 3
+        Hash.new { |hash, key|
+          hash[key] = Hash.new { |hash, key|
+            hash[key] = {}
+          }
         }
-      }
+      else
+        Hash.new { |hash, key|
+          hash[key] = Hash.new { |hash, key|
+            hash[key] = Hash.new { |hash, key|
+              hash[key] = {}
+            }
+          }
+        }
+      end
     end
 
-    def initialize(state)
+    def self.nested_assign(h, coords)
+      target = coords[0..-2].inject(h) { |acc, coord| acc[coord] }
+      target[coords.last] = true
+    end
+
+    def initialize(state, dimensions)
       @state = state
+      @dimensions = dimensions
     end
 
     def [](*coords)
@@ -29,25 +45,25 @@ module AoC::Year2020::Day17
     end
 
     def cycle
-      h = State.new_h
+      h = State.new_h(@dimensions)
 
-      possible_coordinates.each do |x, y, z|
-        if self[x, y, z]
-          h[x][y][z] = true if [2, 3].include?(neighbour_count(x, y, z))
+      possible_coordinates.each do |coords|
+        if self[*coords]
+          State.nested_assign(h, coords) if [2, 3].include?(neighbour_count(*coords))
         else
-          h[x][y][z] = true if neighbour_count(x, y, z) == 3
+          State.nested_assign(h, coords) if neighbour_count(*coords) == 3
         end
       end
 
-      State.new(h)
+      State.new(h, @dimensions)
     end
 
     def count
-      @state.flat_map { |k,v|
-        v.map { |k,v|
-          v.count { |k,v| v }
-        }
-      }.sum
+      if @dimensions == 3
+        @state.values.flat_map(&:values).flat_map(&:values).count
+      else
+        @state.values.flat_map(&:values).flat_map(&:values).flat_map(&:values).count
+      end
     end
 
     private
@@ -65,7 +81,26 @@ module AoC::Year2020::Day17
     end
 
     def live_coordinates
-      @live_coordinates ||= @state.flat_map {|x,rest| rest.flat_map{|y,rest| rest.map {|z, _| [x, y, z] }}}
+      @live_coordinates ||=
+        if @dimensions == 3
+          @state.flat_map { |x,rest|
+            rest.flat_map { |y,rest|
+              rest.map { |z, _|
+                [x, y, z]
+              }
+            }
+          }
+        else
+          @state.flat_map { |x,rest|
+            rest.flat_map { |y,rest|
+              rest.flat_map { |z, rest|
+                rest.map { |w, _|
+                  [x, y, z, w]
+                }
+              }
+            }
+          }
+        end
     end
 
     def neighbours(*coords)
@@ -89,7 +124,7 @@ module AoC::Year2020::Day17
 
   class StateTest < Minitest::Test
     def test_parsing
-      state = State.parse(<<~INPUT)
+      state = State.parse(<<~INPUT, 3)
         .#.
         ..#
         ###
@@ -107,7 +142,7 @@ module AoC::Year2020::Day17
     end
 
     def test_cycle
-      state = State.parse(<<~INPUT).cycle
+      state = State.parse(<<~INPUT, 3).cycle
         .#.
         ..#
         ###
@@ -125,6 +160,41 @@ module AoC::Year2020::Day17
 
       assert_equal 11, state.count
     end
+
+    def test_cycle_4d
+      state = State.parse(<<~INPUT, 4).cycle
+        .#.
+        ..#
+        ###
+      INPUT
+
+      assert state[0,  1, 0, 0]
+      refute state[1,  1, 0, 0]
+      assert state[2,  1, 0, 0]
+      refute state[0,  0, 0, 0]
+      assert state[1,  0, 0, 0]
+      assert state[2,  0, 0, 0]
+      refute state[0, -1, 0, 0]
+      assert state[1, -1, 0, 0]
+      refute state[2, -1, 0, 0]
+
+      [-1, 0, 1].each do |z|
+        [-1, 0, 1].each do |w|
+          next if [z, w] == [0, 0]
+          assert state[0,  1, z, w]
+          refute state[1,  1, z, w]
+          refute state[2,  1, z, w]
+          refute state[0,  0, z, w]
+          refute state[1,  0, z, w]
+          assert state[2,  0, z, w]
+          refute state[0, -1, z, w]
+          assert state[1, -1, z, w]
+          refute state[2, -1, z, w]
+        end
+      end
+
+      assert_equal 29, state.count
+    end
   end
 
   class Part1
@@ -133,7 +203,7 @@ module AoC::Year2020::Day17
     end
 
     def solution
-      s = State.parse(input)
+      s = State.parse(input, dimension_count)
 
       6.times do
         s = s.cycle
@@ -145,6 +215,10 @@ module AoC::Year2020::Day17
     private
 
     attr_reader :input
+
+    def dimension_count
+      3
+    end
 
     def real_input
       @input ||= File.read("aoc/year2020/day17.txt")
@@ -162,14 +236,17 @@ module AoC::Year2020::Day17
   end
 
   class Part2 < Part1
-    def solution
-      0
+    def dimension_count
+      4
     end
   end
 
   class Part2Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+      assert_equal 848, Part2.new(<<~INPUT).solution
+        .#.
+        ..#
+        ###
       INPUT
     end
   end
