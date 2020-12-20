@@ -94,15 +94,49 @@ module AoC::Year2020::Day18
     end
   end
 
+  BadInt = Struct.new(:int) do
+    def *(other)
+      BadInt.new(int + other.int)
+    end
+
+    def +(other)
+      BadInt.new(int * other.int)
+    end
+  end
+
+  class BadIntTest < Minitest::Test
+    def test_equality
+      assert_equal BadInt.new(3), BadInt.new(3)
+      refute_equal BadInt.new(5), BadInt.new(1)
+    end
+
+    def test_multiplication
+      assert_equal BadInt.new(7), BadInt.new(3) * BadInt.new(4)
+    end
+
+    def test_addition
+      assert_equal BadInt.new(12), BadInt.new(3) + BadInt.new(4)
+    end
+  end
+
   class Part2 < Part1
+    def initialize(input = real_input)
+      @input = input.split("\n")
+    end
+
     def solution
-      0
+      input.sum do |problem|
+        eval(problem.gsub(/(\d)/, 'BadInt.new(\1)').tr("*+", "+*")).int
+      end
     end
   end
 
   class Part2Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+      assert_equal 23622, Part2.new(<<~INPUT).solution
+        1 + 2 * 3 + 4 * 5 + 6
+        1 + (2 * 3) + (4 * (5 + 6))
+        ((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2
       INPUT
     end
   end
