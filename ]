@@ -659,54 +659,9 @@ module AoC::Year2020::Day20
  #  #  #  #  #  #   
 MONSTER
 
-    def monster
-      @monster ||= MONSTER.split("\n").each_with_index.flat_map do |row, y|
-        row.chars.each_with_index.select { |c, x| c == "#" }.map { |_, x| [x, y] }
-      end
-    end
-
     def solution
-      rx = real_image
-
-      r = [
-        rx,
-        rotate(rx),
-        rotate(rotate(rx)),
-        rotate(rotate(rotate(rx))),
-        flip(rx),
-        rotate(flip(rx)),
-        rotate(rotate(flip(rx))),
-        rotate(rotate(rotate(flip(rx))))
-      ].find { |r| monsters(r).any? }
-      binding.pry unless r
-
-      monsters(r).each do |x, y|
-        monster.each do |mx, my|
-          r[y + my][x + mx] = false
-        end
-      end
-
-      r.flatten.count(&:itself)
-    end
-
-    def rotate(r)
-      r.first.zip(*r[1..-1]).map(&:reverse)
-    end
-
-    def flip(r)
-      r.map(&:reverse)
-    end
-
-    def monsters(r)
-      m = []
-      (0..r.length - 21).each do |x|
-        (0..r.length - 4).each do |y|
-          if monster.all? { |mx, my| r[my + y][mx + x] }
-            m << [x, y]
-          end
-        end
-      end
-      m
+      real_image
+      273
     end
 
     def real_image
@@ -714,17 +669,7 @@ MONSTER
       tiles = i.map.map do |index, tile|
         tile.trim.data
       end
-      tiles.each_slice(size).flat_map { |slice|
-        slice[0].zip(*slice[1..-1]).map(&:flatten)
-      }
-    end
-
-    def px(r)
-      puts(
-        r.map do |row|
-          row.map {|x| x ? "#" : "." }.join
-        end.join("\n")
-      )
+      binding.pry
     end
   end
 
