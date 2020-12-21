@@ -411,26 +411,11 @@ module AoC::Year2020::Day20
     end
 
     def solution
-      image = solve(Image.new({}, size), 0, input)
-
-      image.tile_at(0, 0).id * image.tile_at(0, size - 1).id * image.tile_at(size - 1, 0) * image.tile_at(size - 1, size - 1).id
+      x = input.map(&:possible_edges).flat_map(&:to_a).group_by(&:itself).transform_values(&:length)
+      input.select {|t| [t.top_edge, t.right_edge, t.left_edge, t.bottom_edge].count {|e| x[e] == 2 } == 2 }.map(&:id).inject(&:*)
     end
 
     private
-
-    def solve(image, index, remaining_tiles)
-      return image if image.full? && image.valid?
-
-      next_tiles = image.filter_tiles(index, remaining_tiles)
-      return false if next_tiles.empty?
-
-      next_tiles.each do |tile|
-        i = solve(image.set(index, tile), index + 1, remaining_tiles.reject {|t| t.id == tile.id})
-        return i if i
-      end
-
-      false
-    end
 
     attr_reader :input
 
