@@ -193,6 +193,22 @@ module AoC::Year2020::Day22
     end
   end
 
+  CACHE = Class.new do
+    def [](g)
+      @results ||= {}
+      r = @results[[g.deck_one, g.deck_two]]
+      if r
+        puts "cache hit"
+        return r
+      end
+
+      gx = g
+      gx = gx.step until gx.over?
+
+      @results[[g.deck_one, g.deck_two]] = gx
+    end
+  end.new
+
   Game2 = Struct.new(:deck_one, :deck_two, :previous_states, :p1_won) do
     def step
       if previous_states[[deck_one, deck_two]]
@@ -211,8 +227,7 @@ module AoC::Year2020::Day22
       else
         sub_d1 = d1.subdeck(card_one)
         sub_d2 = d2.subdeck(card_two)
-        sub_game = Game2.new(sub_d1, sub_d2, {})
-        sub_game = sub_game.step until sub_game.over?
+        sub_game = CACHE[Game2.new(sub_d1, sub_d2, {})]
 
         if sub_game.winner == sub_game.deck_one
           d1 = d1.add([card_one, card_two])
@@ -236,7 +251,7 @@ module AoC::Year2020::Day22
     end
   end
 
-  class GameTest < Minitest::Test
+  class Game2Test < Minitest::Test
     def test_example
       g = Game2.new(
         Deck.new([9, 2, 6, 3, 1]),
@@ -249,6 +264,14 @@ module AoC::Year2020::Day22
   class Part2 < Part1
     def initialize(input = real_input)
       @input = Parser.new(input, Game2).game
+    end
+
+    def solution
+      game = input
+
+      game = CACHE[game]
+
+      game.winner.score
     end
   end
 
