@@ -50,15 +50,20 @@ module AoC::Year2020::Day21
     end
 
     def solution
-      allergens = input.flat_map(&:allergens).uniq
-      unsafe_ingredients = allergens.flat_map do |a|
-        input.select{|f|f.allergens.include? a}.map(&:ingredients).inject(&:&)
-      end.uniq
-
       input.sum { |f| (f.ingredients - unsafe_ingredients).length }
     end
 
     private
+
+    def allergens
+      @allergens ||= input.flat_map(&:allergens).uniq
+    end
+
+    def unsafe_ingredients
+      @unsafe_ingredients ||= allergens.flat_map do |a|
+        input.select{|f|f.allergens.include? a}.map(&:ingredients).inject(&:&)
+      end.uniq
+    end
 
     attr_reader :input
 
@@ -80,13 +85,36 @@ module AoC::Year2020::Day21
 
   class Part2 < Part1
     def solution
-      0
+      u = allergens.map do |a|
+        [a, input.select{|f|f.allergens.include? a}.map(&:ingredients).inject(&:&)]
+      end.to_h
+
+      bad = []
+
+      until u.empty?
+        allergen, foods= *u.find {|allergen, foods| foods.length == 1 }
+        food = foods.first
+
+        u.delete(allergen)
+
+        u.transform_values! { |v|
+          v.reject { |f| f == food }
+        }
+
+        bad << [allergen, food]
+      end
+
+      bad.sort_by(&:first).map(&:last).join(",")
     end
   end
 
   class Part2Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+      assert_equal "mxmxvkd,sqjhc,fvjkl", Part2.new(<<~INPUT).solution
+        mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
+        trh fvjkl sbzzf mxmxvkd (contains dairy)
+        sqjhc fvjkl (contains soy)
+        sqjhc mxmxvkd sbzzf (contains fish)
       INPUT
     end
   end
