@@ -198,7 +198,6 @@ module AoC::Year2020::Day22
       @results ||= {}
       r = @results[[g.deck_one, g.deck_two]]
       if r
-        puts "cache hit"
         return r
       end
 
