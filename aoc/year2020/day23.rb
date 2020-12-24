@@ -85,7 +85,8 @@ module AoC::Year2020::Day23
 
   class Part1Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part1.new(<<~INPUT).solution
+      assert_equal "67384529", Part1.new(<<~INPUT).solution
+        389125467
       INPUT
     end
   end
@@ -98,7 +99,8 @@ module AoC::Year2020::Day23
 
   class Part2Test < Minitest::Test
     def test_sample_input
-      assert_equal 0, Part2.new(<<~INPUT).solution
+      assert_equal 149245887792, Part2.new(<<~INPUT).solution
+        389125467
       INPUT
     end
   end
