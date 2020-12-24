@@ -75,7 +75,7 @@ module AoC::Year2020::Day23
     end
 
     def solution
-      game = game_class.new(input)
+      game = new_game
       n.times.each { |n| game.step!  }
       result game
     end
@@ -95,8 +95,8 @@ module AoC::Year2020::Day23
       str
     end
 
-    def game_class
-      Game
+    def new_game
+      Game.new(input)
     end
 
     def n
@@ -116,28 +116,23 @@ module AoC::Year2020::Day23
     end
   end
 
-  class Game2 < Game
-    def initialize(input)
-      @cups = input
-      @cups = input + ((1..1_000_000).to_a - input)
-      @current = cups[0]
-      @min = cups.min
-      @max = cups.max
-    end
-  end
-
   class Part2 < Part1
-    def game_class
-      Game2
+    def new_game
+      Game.new(input + (input.max + 1..1_000_000).to_a)
     end
 
     def n
       10_000_000
     end
+
+    def result(game)
+      one = game.cups
+      one.last.first * one.last.last.first
+    end
   end
 
   class Part2Test < Minitest::Test
-    def xtest_sample_input
+    def test_sample_input
       assert_equal 149245887792, Part2.new(<<~INPUT).solution
         389125467
       INPUT
