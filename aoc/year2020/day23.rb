@@ -31,7 +31,11 @@ module AoC::Year2020::Day23
     end
 
     def take_three
-      (cups * 2)[current_index + 1..current_index + 3]
+      [
+        cups[(current_index + 1) % cups.length],
+        cups[(current_index + 2) % cups.length],
+        cups[(current_index + 3) % cups.length]
+      ]
     end
 
     def current_index
@@ -67,16 +71,30 @@ module AoC::Year2020::Day23
     end
 
     def solution
-      game = Game.new(input)
-      100.times { game.step! }
-      cups = game.cups
-      one_index = cups.find_index(1)
-      (cups[one_index + 1..-1] + cups[0..one_index - 1]).join
+      game = game_class.new(input)
+      n.times.each { |n|
+        game.step!
+      }
+      result game
     end
 
     private
 
     attr_reader :input
+
+    def result game
+      cups = game.cups
+      one_index = cups.find_index(1)
+      (cups[one_index + 1..-1] + cups[0..one_index - 1]).join
+    end
+
+    def game_class
+      Game
+    end
+
+    def n
+      100
+    end
 
     def real_input
       @input ||= File.read("aoc/year2020/day23.txt")
@@ -91,9 +109,23 @@ module AoC::Year2020::Day23
     end
   end
 
+  class Game2 < Game
+    def initialize(input)
+      @cups = input
+      @cups = input + ((1..1_000_000).to_a - input)
+      @current = cups[0]
+      @min = cups.min
+      @max = cups.max
+    end
+  end
+
   class Part2 < Part1
-    def solution
-      0
+    def game_class
+      Game2
+    end
+
+    def n
+      10_000_000
     end
   end
 
